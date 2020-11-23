@@ -19,62 +19,91 @@ namespace tech_of_prog1
 			InitializeComponent();
 		}
 
-		private void Draw()
-		{
-			Bitmap bmp = new Bitmap(pictureBoxPlane.Width, pictureBoxPlane.Height);
-			Graphics gr = Graphics.FromImage(bmp);
-			plane.DrawTransport(gr);
-			pictureBoxPlane.Image = bmp;
-		}
+        public void SetCar(ITransport plane)
+        {
+            this.plane = plane;
+            Random rnd = new Random();
+            plane.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCars.Width, pictureBoxCars.Height);
+            Draw();
+            
+        }
 
-		private void buttonMove_Click(object sender, EventArgs e)
+        private void Draw()
+        {
+            Bitmap bmp = new Bitmap(pictureBoxCars.Width, pictureBoxCars.Height);
+            Graphics gr = Graphics.FromImage(bmp);
+            plane?.DrawTransport(gr);
+            pictureBoxCars.Image = bmp;
+        }
+
+        private void buttonCreateFighter_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            plane = new Plane(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Gray);
+            plane.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCars.Width, pictureBoxCars.Height);
+            Draw();
+
+        }
+
+        private void buttonCreatePlane_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            plane = new Fighter(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Gray, Color.Red, true, true);
+            plane.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCars.Width, pictureBoxCars.Height);
+            Draw();
+
+        }
+
+        private void buttonMove_Click(object sender, EventArgs e)
 		{
 			//получаем имя кнопки
 			string name = (sender as Button).Name;
 			switch (name)
 			{
-				case "buttonUp":
-					plane.MoveTransport(Direction.Up);
-					break;
-				case "buttonDown":
-					plane.MoveTransport(Direction.Down);
-					break;
-				case "buttonLeft":
-					plane.MoveTransport(Direction.Left);
-					break;
-				case "buttonRight":
-					plane.MoveTransport(Direction.Right);
-					break;
-			}
+                case "buttonUp":
+                    plane?.MoveTransport(Direction.Up);
+                    break;
+                case "buttonDown":
+                    plane?.MoveTransport(Direction.Down);
+                    break;
+                case "buttonLeft":
+                    plane?.MoveTransport(Direction.Left);
+                    break;
+                    
+                case "buttonRight":
+                    plane?.MoveTransport(Direction.Right);
+                    break;
+
+            }
 			Draw();
 		}
 
 		private void InitializeComponent()
 		{
-            this.pictureBoxPlane = new System.Windows.Forms.PictureBox();
+            this.pictureBoxCars = new System.Windows.Forms.PictureBox();
             this.buttonCreateFighter = new System.Windows.Forms.Button();
             this.buttonUp = new System.Windows.Forms.Button();
             this.buttonLeft = new System.Windows.Forms.Button();
             this.buttonDown = new System.Windows.Forms.Button();
             this.buttonRight = new System.Windows.Forms.Button();
             this.buttonCreatePlane = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlane)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCars)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBoxPlane
+            // pictureBoxCars
             // 
-            this.pictureBoxPlane.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxPlane.Location = new System.Drawing.Point(0, 0);
-            this.pictureBoxPlane.Name = "pictureBoxPlane";
-            this.pictureBoxPlane.Size = new System.Drawing.Size(884, 461);
-            this.pictureBoxPlane.TabIndex = 0;
-            this.pictureBoxPlane.TabStop = false;
+            this.pictureBoxCars.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxCars.Location = new System.Drawing.Point(0, 0);
+            this.pictureBoxCars.Name = "pictureBoxCars";
+            this.pictureBoxCars.Size = new System.Drawing.Size(889, 455);
+            this.pictureBoxCars.TabIndex = 0;
+            this.pictureBoxCars.TabStop = false;
             // 
             // buttonCreateFighter
             // 
-            this.buttonCreateFighter.Location = new System.Drawing.Point(160, 0);
+            this.buttonCreateFighter.Location = new System.Drawing.Point(12, 12);
             this.buttonCreateFighter.Name = "buttonCreateFighter";
-            this.buttonCreateFighter.Size = new System.Drawing.Size(151, 22);
+            this.buttonCreateFighter.Size = new System.Drawing.Size(126, 29);
             this.buttonCreateFighter.TabIndex = 1;
             this.buttonCreateFighter.Text = "Создать истрибитель";
             this.buttonCreateFighter.UseVisualStyleBackColor = true;
@@ -126,9 +155,9 @@ namespace tech_of_prog1
             // 
             // buttonCreatePlane
             // 
-            this.buttonCreatePlane.Location = new System.Drawing.Point(0, 0);
+            this.buttonCreatePlane.Location = new System.Drawing.Point(156, 12);
             this.buttonCreatePlane.Name = "buttonCreatePlane";
-            this.buttonCreatePlane.Size = new System.Drawing.Size(154, 22);
+            this.buttonCreatePlane.Size = new System.Drawing.Size(126, 29);
             this.buttonCreatePlane.TabIndex = 6;
             this.buttonCreatePlane.Text = "Создать самолет";
             this.buttonCreatePlane.UseVisualStyleBackColor = true;
@@ -136,38 +165,20 @@ namespace tech_of_prog1
             // 
             // FormPlane
             // 
-            this.ClientSize = new System.Drawing.Size(884, 461);
+            this.ClientSize = new System.Drawing.Size(889, 455);
             this.Controls.Add(this.buttonCreatePlane);
             this.Controls.Add(this.buttonRight);
             this.Controls.Add(this.buttonDown);
             this.Controls.Add(this.buttonLeft);
             this.Controls.Add(this.buttonUp);
             this.Controls.Add(this.buttonCreateFighter);
-            this.Controls.Add(this.pictureBoxPlane);
+            this.Controls.Add(this.pictureBoxCars);
             this.Name = "FormPlane";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlane)).EndInit();
+            this.Text = "Парковка";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCars)).EndInit();
             this.ResumeLayout(false);
-		}
-
-		private void buttonCreateFighter_Click(object sender, EventArgs e)
-		{
-			Random rnd = new Random();
-			plane = new Fighter(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Green,
-		   Color.Red, true, true);
-			plane.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxPlane.Width,
-		   pictureBoxPlane.Height);
-			Draw();
-		}
-
-		private void buttonCreatePlane_Click(object sender, EventArgs e)
-		{
-			Random rnd = new Random();
-			plane = new Plane(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Green);			
-			plane.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxPlane.Width,
-			pictureBoxPlane.Height);
-			Draw();
 
 		}
-	}
+    }
 }

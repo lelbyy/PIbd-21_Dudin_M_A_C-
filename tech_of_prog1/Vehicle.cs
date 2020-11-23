@@ -17,24 +17,29 @@ namespace tech_of_prog1
         protected int _pictureWidth;
         
         protected int _pictureHeight;
-
-        protected int planeHeight = 150;
-
-        protected int planeWidth = 130;
         public int MaxSpeed { protected set; get; }
+        /// <summary>
+        /// Вес автомобиля
+        /// </summary>
         public float Weight { protected set; get; }
+        /// <summary>
+        /// Основной цвет кузова
+        /// </summary>
         public Color MainColor { protected set; get; }
-
         public void SetPosition(int x, int y, int width, int height)
         {
-           _startPosX = x;
-
-           _startPosY = y;
-                
-           _pictureWidth = 800;
-
-           _pictureHeight = 500;
+        _startPosX = x;
+        _startPosY = y;
+        _pictureWidth = width;
+        _pictureHeight = height;
         }
+
+        public void SetPosition(int x, int y)
+        {
+            _startPosX = x;
+            _startPosY = y;
+        }
+       
         public abstract void DrawTransport(Graphics g);
         public abstract void MoveTransport(Direction direction);
     }
