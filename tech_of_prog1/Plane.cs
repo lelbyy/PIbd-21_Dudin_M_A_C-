@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using System.Drawing;
 
 namespace tech_of_prog1
-{	
+{
+	
         public class Plane : Vehicle
-        {            
+        {
+            
             protected readonly int planeWidth = 210;
             
             protected readonly int planeHeight = 120;
@@ -29,7 +31,6 @@ namespace tech_of_prog1
                 this.planeWidth = planeWidth;
                 this.planeHeight = planeHeight;
             }
-
             public override void MoveTransport(Direction direction)
             {
             int LeftSide = 25;
@@ -81,6 +82,8 @@ namespace tech_of_prog1
             g.DrawLine(pen, _startPosX + 70, _startPosY + 30, _startPosX + 210, _startPosY + 30);
             g.DrawLine(pen, _startPosX + 70, _startPosY + 70, _startPosX + 210, _startPosY + 70);
                 
+
+
             Point point1 = new Point(_startPosX, _startPosY + 50);
             Point point2 = new Point(_startPosX + 30, _startPosY + 30);
             Point point3 = new Point(_startPosX + 210, _startPosY + 30);
@@ -89,6 +92,7 @@ namespace tech_of_prog1
             Point point6 = new Point(_startPosX, _startPosY + 50);
             Point[] corpuse = { point1, point2, point3, point4, point5, point6 };
             g.FillPolygon(myBrush, corpuse);
+
 
             //крылья
 
@@ -114,6 +118,8 @@ namespace tech_of_prog1
             Point[] krilo_niz = { point11, point12, point13, point14 };
             g.FillPolygon(myBrush, krilo_verh);
             g.FillPolygon(myBrush, krilo_niz);
+
+
 
             //хвост
 
