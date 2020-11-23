@@ -18,8 +18,7 @@ namespace tech_of_prog1
 		{
 			InitializeComponent();
 		}
-
-        public void SetCar(ITransport plane)
+        public void SetPlane(ITransport plane)
         {
             this.plane = plane;
             Random rnd = new Random();
@@ -27,7 +26,6 @@ namespace tech_of_prog1
             Draw();
             
         }
-
         private void Draw()
         {
             Bitmap bmp = new Bitmap(pictureBoxCars.Width, pictureBoxCars.Height);
@@ -35,8 +33,9 @@ namespace tech_of_prog1
             plane?.DrawTransport(gr);
             pictureBoxCars.Image = bmp;
         }
+        
 
-        private void buttonCreateFighter_Click(object sender, EventArgs e)
+        private void buttonCreatePlane_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
             plane = new Plane(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Gray);
@@ -44,8 +43,7 @@ namespace tech_of_prog1
             Draw();
 
         }
-
-        private void buttonCreatePlane_Click(object sender, EventArgs e)
+        private void buttonCreateFighter_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
             plane = new Fighter(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Gray, Color.Red, true, true);
@@ -53,7 +51,6 @@ namespace tech_of_prog1
             Draw();
 
         }
-
         private void buttonMove_Click(object sender, EventArgs e)
 		{
 			//получаем имя кнопки
@@ -180,5 +177,11 @@ namespace tech_of_prog1
             this.ResumeLayout(false);
 
 		}
+
+		
+
+		
+
+        
     }
 }

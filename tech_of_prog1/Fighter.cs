@@ -11,14 +11,17 @@ namespace tech_of_prog1
     {
 
         public Color DopColor { private set; get; }
-        public bool Guns { private set; get; }    
+        public bool Guns { private set; get; }
+       
         public bool Nose { private set; get; }
+
         public Fighter(int maxSpeed, float weight, Color mainColor, Color dopColor,
         bool guns, bool nose) : base(maxSpeed, weight, mainColor, 210, 120)
         {
             DopColor = dopColor;
             Guns = guns;
-            Nose = nose;          
+            Nose = nose;
+           
         }
        
         public override void DrawTransport(Graphics g)
@@ -36,7 +39,7 @@ namespace tech_of_prog1
             }
             if (Nose)
             {
-                g.DrawLine(pen, _startPosX, _startPosY + 50, _startPosX -30, _startPosY + 50);
+                g.DrawLine(pen, _startPosX, _startPosY + 50, _startPosX -10, _startPosY + 50);
             }
         }
     }
