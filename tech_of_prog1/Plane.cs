@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 using System.Drawing;
 
 namespace tech_of_prog1
-{
-	
+{	
         public class Plane : Vehicle
-        {   
+        {            
+            protected readonly int planeWidth = 210;
+            
+            protected readonly int planeHeight = 120;
+            
             public Plane(int maxSpeed, float weight, Color mainColor)
             {
                 MaxSpeed = maxSpeed;
@@ -26,10 +29,11 @@ namespace tech_of_prog1
                 this.planeWidth = planeWidth;
                 this.planeHeight = planeHeight;
             }
+
             public override void MoveTransport(Direction direction)
             {
             int LeftSide = 25;
-            int UpSide = 15;
+            int RightSide = 15;
             int step = Convert.ToInt32(MaxSpeed * 100 / Weight);
             switch (direction)
             {
@@ -49,14 +53,14 @@ namespace tech_of_prog1
                     break;
                 //вверх
                 case Direction.Up:
-                    if (_startPosY - step >= UpSide)
+                    if (_startPosY - step >= RightSide)
                     {
                         _startPosY -= step;
                     }
                     break;
                 //вниз
                 case Direction.Down:
-                    if (_startPosY + step < _pictureHeight - base.planeHeight)
+                    if (_startPosY + step < _pictureHeight - planeHeight)
                     {
                         _startPosY += step;
                     }
@@ -65,7 +69,7 @@ namespace tech_of_prog1
         }
             public override void DrawTransport(Graphics g)
             {
-            Pen pen = new Pen(MainColor);
+            Pen pen = new Pen(Color.Black);
             SolidBrush myBrush = new SolidBrush(MainColor);
 
             //нос самолета

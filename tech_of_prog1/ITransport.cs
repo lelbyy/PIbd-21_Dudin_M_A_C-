@@ -8,12 +8,12 @@ using System.Drawing;
 
 namespace tech_of_prog1
 {
-	interface ITransport
+	public interface ITransport
 	{
+
         void SetPosition(int x, int y, int width, int height);
-
-        void MoveTransport(Direction direction);
-
+        void SetPosition(int x, int y);
+        void MoveTransport(Direction direction);     
         void DrawTransport(Graphics g);
     }
 }
