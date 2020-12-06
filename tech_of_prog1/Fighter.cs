@@ -23,7 +23,21 @@ namespace tech_of_prog1
             Nose = nose;
            
         }
-       
+
+        public Fighter(string info) : base(info)
+        {
+            string[] strs = info.Split(separator);
+            if (strs.Length == 6)
+            {
+                MaxSpeed = Convert.ToInt32(strs[0]);
+                Weight = Convert.ToInt32(strs[1]);
+                MainColor = Color.FromName(strs[2]);
+                DopColor = Color.FromName(strs[3]);
+                Guns = Convert.ToBoolean(strs[4]);
+                Nose = Convert.ToBoolean(strs[5]);
+            }
+        }
+
         public override void DrawTransport(Graphics g)
         {
             Pen pen = new Pen(DopColor);
@@ -48,5 +62,10 @@ namespace tech_of_prog1
             DopColor = color;
         }
 
+        public override string ToString()
+        {
+            return
+           $"{base.ToString()}{separator}{DopColor.Name}{separator}{Guns}{separator}{Nose}";
+        }
     }
 }

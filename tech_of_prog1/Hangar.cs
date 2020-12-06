@@ -8,16 +8,16 @@ using System.Windows.Forms;
 
 namespace tech_of_prog1
 {
-    public class Parking<T> where T : class, ITransport
+    public class Hangar<T> where T : class, ITransport
     {
         private readonly List<T> _places;           
         private readonly int pictureWidth;      
         private readonly int pictureHeight;       
         private readonly int _placeSizeWidth = 430;      
-        private readonly int _placeSizeHeight =160;                                                                                                   
+        private readonly int _placeSizeHeight =160;
         private readonly int parkingPlacesInRow;
         private readonly int _maxCount;
-        public Parking(int picWidth, int picHeight)
+        public Hangar(int picWidth, int picHeight)
         {
             
             int width = picWidth / _placeSizeWidth;
@@ -29,28 +29,28 @@ namespace tech_of_prog1
             _maxCount = width * height;
 
         }
-        /// <param name="p">Парковка</param>
+        /// <param name="h">Парковка</param>
         /// <param name="car">Добавляемый автомобиль</param>
-        public static bool operator +(Parking<T> p, T plane)
+        public static bool operator +(Hangar<T> h, T plane)
 
         {
-            if (p._places.Count >= p._maxCount)
+            if (h._places.Count >= h._maxCount)
             {
                 return false;
             }
-            p._places.Add(plane);
+            h._places.Add(plane);
             return true;
         }
        
-        public static T operator -(Parking<T> p, int index)
+        public static T operator -(Hangar<T> h, int index)
         {
-            if (index < -1 || index > p._places.Count)
+            if (index < -1 || index > h._places.Count)
             {
                 return null;
             }
-            T car = p._places[index];
-            p._places.RemoveAt(index);
-            return car;
+            T plane = h._places[index];
+            h._places.RemoveAt(index);
+            return plane;
         }
         /// <summary>
         /// Метод отрисовки парковки
@@ -84,6 +84,15 @@ namespace tech_of_prog1
                (pictureHeight / _placeSizeHeight) * _placeSizeHeight);
             }
 
+        }
+
+        public T GetNext(int index)
+        {
+            if (index < 0 || index >= _places.Count)
+            {
+                return null;
+            }
+            return _places[index];
         }
     }
 }
