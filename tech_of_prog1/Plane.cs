@@ -6,23 +6,37 @@ using System.Threading.Tasks;
 using System.Drawing;
 
 namespace tech_of_prog1
-{
-	
+{	
         public class Plane : Vehicle
         {
             
             protected readonly int planeWidth = 210;
             
             protected readonly int planeHeight = 120;
-            
-            public Plane(int maxSpeed, float weight, Color mainColor)
+
+            protected readonly char separator = ';';
+
+
+        public Plane(int maxSpeed, float weight, Color mainColor)
             {
                 MaxSpeed = maxSpeed;
                 Weight = weight;
                 MainColor = mainColor;
             }
-            
-            protected Plane(int maxSpeed, float weight, Color mainColor, int planeWidth, int
+
+        public Plane(string info)
+        {
+            string[] strs = info.Split(separator);
+            if (strs.Length == 3)
+            {
+                MaxSpeed = Convert.ToInt32(strs[0]);
+                Weight = Convert.ToInt32(strs[1]);
+                MainColor = Color.FromName(strs[2]);
+            }
+        }
+
+
+        protected Plane(int maxSpeed, float weight, Color mainColor, int planeWidth, int
            planeHeight)
             {
                 MaxSpeed = maxSpeed;
@@ -133,7 +147,10 @@ namespace tech_of_prog1
             Point[] hvost = { point15, point16, point17, point18 };
             g.FillPolygon(myBrush, hvost);
         }
+        public override string ToString()
+        {
+            return $"{MaxSpeed}{separator}{Weight}{separator}{MainColor.Name}";
         }
-
     }
+ }
 
