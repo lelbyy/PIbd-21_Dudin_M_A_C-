@@ -18,7 +18,8 @@ namespace tech_of_prog1
         private readonly int parkingPlacesInRow;
         private readonly int _maxCount;
         public Parking(int picWidth, int picHeight)
-        {           
+        {
+            
             int width = picWidth / _placeSizeWidth;
             int height = picHeight / _placeSizeHeight;
             parkingPlacesInRow = height;
@@ -26,9 +27,12 @@ namespace tech_of_prog1
             pictureWidth = picWidth;
             pictureHeight = picHeight;
             _maxCount = width * height;
-        }
 
+        }
+        /// <param name="p">Парковка</param>
+        /// <param name="car">Добавляемый автомобиль</param>
         public static bool operator +(Parking<T> p, T plane)
+
         {
             if (p._places.Count >= p._maxCount)
             {
@@ -44,11 +48,14 @@ namespace tech_of_prog1
             {
                 return null;
             }
-            T plane = p._places[index];
+            T car = p._places[index];
             p._places.RemoveAt(index);
-            return plane;
+            return car;
         }
-
+        /// <summary>
+        /// Метод отрисовки парковки
+        /// </summary>
+        /// <param name="g"></param>
         public void Draw(Graphics g)
         {
             DrawMarking(g);

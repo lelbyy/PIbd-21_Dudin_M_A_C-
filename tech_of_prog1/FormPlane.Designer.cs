@@ -25,12 +25,12 @@
 		
 		
 		private System.Windows.Forms.PictureBox pictureBoxCars;
-		private System.Windows.Forms.Button buttonCreateFighter;
+		private System.Windows.Forms.Button buttonCreate;
 		private System.Windows.Forms.Button buttonUp;
 		private System.Windows.Forms.Button buttonLeft;
 		private System.Windows.Forms.Button buttonDown;
 		private System.Windows.Forms.Button buttonRight;
-		private System.Windows.Forms.Button buttonCreatePlane;
+		private System.Windows.Forms.Button button1;
     }
 }
 
