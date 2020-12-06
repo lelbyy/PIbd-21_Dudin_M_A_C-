@@ -10,35 +10,35 @@ using System.Windows.Forms;
 
 namespace tech_of_prog1
 {
-    public partial class FormParking : Form
+    public partial class FormHangar : Form
     {
         /// <summary>
         /// Объект от класса-парковки
         /// </summary>
-        private readonly ParkingCollection parkingCollection;
-        public FormParking()
+        private readonly HangarCollection hangarCollection;
+        public FormHangar()
         {
             InitializeComponent();
-            parkingCollection = new ParkingCollection(pictureBoxParking.Width,
+            hangarCollection = new HangarCollection(pictureBoxParking.Width,
            pictureBoxParking.Height);
         }
         private void ReloadLevels()
         {
-            int index = listBoxParkings.SelectedIndex;
-            listBoxParkings.Items.Clear();
-            for (int i = 0; i < parkingCollection.Keys.Count; i++)
+            int index = listBoxHangars.SelectedIndex;
+            listBoxHangars.Items.Clear();
+            for (int i = 0; i < hangarCollection.Keys.Count; i++)
             {
-                listBoxParkings.Items.Add(parkingCollection.Keys[i]);
+                listBoxHangars.Items.Add(hangarCollection.Keys[i]);
             }
-            if (listBoxParkings.Items.Count > 0 && (index == -1 || index >=
-           listBoxParkings.Items.Count))
+            if (listBoxHangars.Items.Count > 0 && (index == -1 || index >=
+           listBoxHangars.Items.Count))
             {
-                listBoxParkings.SelectedIndex = 0;
+                listBoxHangars.SelectedIndex = 0;
             }
-            else if (listBoxParkings.Items.Count > 0 && index > -1 && index <
-           listBoxParkings.Items.Count)
+            else if (listBoxHangars.Items.Count > 0 && index > -1 && index <
+           listBoxHangars.Items.Count)
             {
-                listBoxParkings.SelectedIndex = index;
+                listBoxHangars.SelectedIndex = index;
             }
         }
         /// <summary>
@@ -47,11 +47,11 @@ namespace tech_of_prog1
         private void Draw()
         {
          
-            if (listBoxParkings.SelectedIndex > -1)
+            if (listBoxHangars.SelectedIndex > -1)
             {//если выбран один из пуктов в listBox (при старте программы ни один пункт не будет выбран и может возникнуть ошибка, если мы попытаемся обратиться к элементу listBox)
                 Bitmap bmp = new Bitmap(pictureBoxParking.Width, pictureBoxParking.Height);
                 Graphics gr = Graphics.FromImage(bmp);
-                parkingCollection[listBoxParkings.SelectedItem.ToString()].Draw(gr);
+                hangarCollection[listBoxHangars.SelectedItem.ToString()].Draw(gr);
                 pictureBoxParking.Image = bmp;
             }
         }
@@ -62,13 +62,13 @@ namespace tech_of_prog1
         /// <param name="e"></param>
         private void buttonSetPlane_Click(object sender, EventArgs e)
         {
-            if (listBoxParkings.SelectedIndex > -1)
+            if (listBoxHangars.SelectedIndex > -1)
             {
                 ColorDialog dialog = new ColorDialog();
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var plane = new Plane(100, 1000, dialog.Color);
-                    if (parkingCollection[listBoxParkings.SelectedItem.ToString()] + plane)
+                    if (hangarCollection[listBoxHangars.SelectedItem.ToString()] + plane)
                     {
                         Draw();
                     }
@@ -92,9 +92,9 @@ namespace tech_of_prog1
         /// <param name="e"></param>
         private void buttonTakePlane_Click(object sender, EventArgs e)
         {
-            if (listBoxParkings.SelectedIndex > -1 && maskedTextBox1.Text != "")
+            if (listBoxHangars.SelectedIndex > -1 && maskedTextBox1.Text != "")
             {
-                var plane = parkingCollection[listBoxParkings.SelectedItem.ToString()] - Convert.ToInt32(maskedTextBox1.Text);
+                var plane = hangarCollection[listBoxHangars.SelectedItem.ToString()] - Convert.ToInt32(maskedTextBox1.Text);
                 if (plane != null)
                 {
                     FormPlane form = new FormPlane();
@@ -107,7 +107,7 @@ namespace tech_of_prog1
 
         private void buttonSetFighter_Click(object sender, EventArgs e)
         {
-            if (listBoxParkings.SelectedIndex > -1)
+            if (listBoxHangars.SelectedIndex > -1)
             {
                 ColorDialog dialog = new ColorDialog();
                 if (dialog.ShowDialog() == DialogResult.OK)
@@ -116,7 +116,7 @@ namespace tech_of_prog1
                     if (dialogDop.ShowDialog() == DialogResult.OK)
                     {
                         var plane = new Fighter(100, 1000, dialog.Color, dialogDop.Color, true, true);
-                        if (parkingCollection[listBoxParkings.SelectedItem.ToString()] + plane)
+                        if (hangarCollection[listBoxHangars.SelectedItem.ToString()] + plane)
                         {
                             Draw();
                         }
@@ -128,7 +128,7 @@ namespace tech_of_prog1
                 }
             }
         }
-        private void buttonAddParking_Click(object sender, EventArgs e)
+        private void buttonAddHangar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxNewLevelName.Text))
             {
@@ -137,17 +137,17 @@ namespace tech_of_prog1
                 return;
             }
            
-            parkingCollection.AddParking(textBoxNewLevelName.Text);
+            hangarCollection.AddHangar(textBoxNewLevelName.Text);
             ReloadLevels();
         }
 
-        private void buttonDelParking_Click(object sender, EventArgs e)
+        private void buttonDelHangar_Click(object sender, EventArgs e)
         {
-            if (listBoxParkings.SelectedIndex > -1)
+            if (listBoxHangars.SelectedIndex > -1)
             {
-                if (MessageBox.Show($"Удалить парковку { listBoxParkings.SelectedItem.ToString()}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show($"Удалить парковку { listBoxHangars.SelectedItem.ToString()}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    parkingCollection.DelParking(listBoxParkings.SelectedItem.ToString());
+                    hangarCollection.DelParking(listBoxHangars.SelectedItem.ToString());
                     ReloadLevels();
                 }
             }
@@ -159,16 +159,16 @@ namespace tech_of_prog1
 
         private void AddPlane_Click(object sender, EventArgs e)
         {
-            var formCarConfig = new FormCarConfig();
+            var formCarConfig = new FormPlaneConfig();
             formCarConfig.AddEvent(addPlane);
             formCarConfig.Show();
         }
 
         private void addPlane(Vehicle plane)
         {
-            if (plane != null && listBoxParkings.SelectedIndex > -1)
+            if (plane != null && listBoxHangars.SelectedIndex > -1)
             {
-                if ((parkingCollection[listBoxParkings.SelectedItem.ToString()]) + plane)
+                if ((hangarCollection[listBoxHangars.SelectedItem.ToString()]) + plane)
                 {
                     Draw();
                 }

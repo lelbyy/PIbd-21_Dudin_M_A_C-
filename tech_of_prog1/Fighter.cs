@@ -16,7 +16,7 @@ namespace tech_of_prog1
         public bool Nose { private set; get; }
 
         public Fighter(int maxSpeed, float weight, Color mainColor, Color dopColor,
-        bool guns, bool nose) : base(maxSpeed, weight, mainColor, 210, 120)
+ bool guns, bool nose) : base(maxSpeed, weight, mainColor, 210, 120)
         {
             DopColor = dopColor;
             Guns = guns;
@@ -42,5 +42,11 @@ namespace tech_of_prog1
                 g.DrawLine(pen, _startPosX, _startPosY + 50, _startPosX -10, _startPosY + 50);
             }
         }
+
+        public void SetDopColor(Color color)
+        {
+            DopColor = color;
+        }
+
     }
 }

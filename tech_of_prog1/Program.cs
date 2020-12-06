@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace tech_of_prog1
 {
+	public delegate void PlaneDelegate(Vehicle plane);
+
+
 	static class Program
 	{
 		/// <summary>
@@ -16,7 +19,7 @@ namespace tech_of_prog1
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new FormParking());
+			Application.Run(new FormHangar());
 		}
 	}
 }

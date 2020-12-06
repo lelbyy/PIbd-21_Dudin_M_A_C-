@@ -15,5 +15,7 @@ namespace tech_of_prog1
         void SetPosition(int x, int y);
         void MoveTransport(Direction direction);     
         void DrawTransport(Graphics g);
+        void SetMainColor(Color color);
+
     }
 }

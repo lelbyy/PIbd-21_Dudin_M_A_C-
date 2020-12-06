@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace tech_of_prog1
 {
-	class ParkingCollection
+	class HangarCollection
 	{
         /// <summary>
         /// Словарь (хранилище) с парковками
@@ -30,7 +30,7 @@ namespace tech_of_prog1
         /// </summary>
         /// <param name="pictureWidth"></param>
         /// <param name="pictureHeight"></param>
-        public ParkingCollection(int pictureWidth, int pictureHeight)
+        public HangarCollection(int pictureWidth, int pictureHeight)
         {
             parkingStages = new Dictionary<string, Parking<Vehicle>>();
             this.pictureWidth = pictureWidth;
@@ -40,7 +40,7 @@ namespace tech_of_prog1
         /// Добавление парковки
         /// </summary>
         /// <param name="name">Название парковки</param>
-        public void AddParking(string name)
+        public void AddHangar(string name)
         {
             if (parkingStages.ContainsKey(name))
             {
@@ -59,15 +59,6 @@ namespace tech_of_prog1
                 parkingStages.Remove(name);
             }
         }
-
-        public void DelParking(int name)
-        {
-            if (name < Keys.Count && name >= 0)
-            {             
-                    parkingStages.Remove(Keys[name]);
-            }
-        }
-
         /// <summary>
         /// Доступ к парковке
         /// </summary>

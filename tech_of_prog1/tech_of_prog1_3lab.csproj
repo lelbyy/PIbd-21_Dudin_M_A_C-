@@ -46,7 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParkingCollection.cs" />
+    <Compile Include="FormPlaneConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPlaneConfig.Designer.cs">
+      <DependentUpon>FormPlaneConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HangarCollection.cs" />
     <Compile Include="Plane.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="FormPlane.cs">
@@ -55,23 +61,26 @@
     <Compile Include="FormPlane.Designer.cs">
       <DependentUpon>FormPlane.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormParking.cs">
+    <Compile Include="FormHangar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormParking.Designer.cs">
-      <DependentUpon>FormParking.cs</DependentUpon>
+    <Compile Include="FormHangar.Designer.cs">
+      <DependentUpon>FormHangar.cs</DependentUpon>
     </Compile>
     <Compile Include="ITransport.cs" />
-    <Compile Include="Parking.cs" />
+    <Compile Include="Hangar.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fighter.cs" />
     <Compile Include="Vehicle.cs" />
+    <EmbeddedResource Include="FormPlaneConfig.resx">
+      <DependentUpon>FormPlaneConfig.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPlane.resx">
       <DependentUpon>FormPlane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormParking.resx">
-      <DependentUpon>FormParking.cs</DependentUpon>
+    <EmbeddedResource Include="FormHangar.resx">
+      <DependentUpon>FormHangar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

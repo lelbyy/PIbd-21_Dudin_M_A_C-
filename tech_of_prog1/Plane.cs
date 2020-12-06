@@ -133,6 +133,7 @@ namespace tech_of_prog1
             Point[] hvost = { point15, point16, point17, point18 };
             g.FillPolygon(myBrush, hvost);
         }
+        }
+
     }
-}
 

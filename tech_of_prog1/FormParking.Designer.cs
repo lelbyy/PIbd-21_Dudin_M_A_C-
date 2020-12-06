@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
 			this.pictureBoxParking = new System.Windows.Forms.PictureBox();
-			this.buttonSetPlane = new System.Windows.Forms.Button();
-			this.buttonSetFighter = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
 			this.TakePlane = new System.Windows.Forms.Button();
@@ -40,6 +38,7 @@
 			this.buttonDelParking = new System.Windows.Forms.Button();
 			this.textBoxNewLevelName = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
+			this.AddPlane = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxParking)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
@@ -51,26 +50,6 @@
 			this.pictureBoxParking.Size = new System.Drawing.Size(862, 489);
 			this.pictureBoxParking.TabIndex = 0;
 			this.pictureBoxParking.TabStop = false;
-			// 
-			// buttonSetPlane
-			// 
-			this.buttonSetPlane.Location = new System.Drawing.Point(867, 248);
-			this.buttonSetPlane.Name = "buttonSetPlane";
-			this.buttonSetPlane.Size = new System.Drawing.Size(107, 43);
-			this.buttonSetPlane.TabIndex = 1;
-			this.buttonSetPlane.Text = "Припарковать самолет";
-			this.buttonSetPlane.UseVisualStyleBackColor = true;
-			this.buttonSetPlane.Click += new System.EventHandler(this.buttonSetPlane_Click);
-			// 
-			// buttonSetFighter
-			// 
-			this.buttonSetFighter.Location = new System.Drawing.Point(868, 313);
-			this.buttonSetFighter.Name = "buttonSetFighter";
-			this.buttonSetFighter.Size = new System.Drawing.Size(106, 46);
-			this.buttonSetFighter.TabIndex = 2;
-			this.buttonSetFighter.Text = "Припарковать истрибитель";
-			this.buttonSetFighter.UseVisualStyleBackColor = true;
-			this.buttonSetFighter.Click += new System.EventHandler(this.buttonSetFighter_Click);
 			// 
 			// groupBox1
 			// 
@@ -155,19 +134,28 @@
 			this.label2.TabIndex = 8;
 			this.label2.Text = "Парковки";
 			// 
+			// AddPlane
+			// 
+			this.AddPlane.Location = new System.Drawing.Point(874, 281);
+			this.AddPlane.Name = "AddPlane";
+			this.AddPlane.Size = new System.Drawing.Size(106, 39);
+			this.AddPlane.TabIndex = 9;
+			this.AddPlane.Text = "Добавить самолет";
+			this.AddPlane.UseVisualStyleBackColor = true;
+			this.AddPlane.Click += new System.EventHandler(this.AddPlane_Click);
+			// 
 			// FormParking
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(995, 501);
+			this.Controls.Add(this.AddPlane);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.textBoxNewLevelName);
 			this.Controls.Add(this.buttonDelParking);
 			this.Controls.Add(this.buttonAddParking);
 			this.Controls.Add(this.listBoxParkings);
 			this.Controls.Add(this.groupBox1);
-			this.Controls.Add(this.buttonSetFighter);
-			this.Controls.Add(this.buttonSetPlane);
 			this.Controls.Add(this.pictureBoxParking);
 			this.Name = "FormParking";
 			this.Text = "Парковка";
@@ -182,8 +170,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBoxParking;
-        private System.Windows.Forms.Button buttonSetPlane;
-        private System.Windows.Forms.Button buttonSetFighter;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button TakePlane;
         private System.Windows.Forms.Label label1;
@@ -193,5 +179,6 @@
         private System.Windows.Forms.Button buttonDelParking;
         private System.Windows.Forms.TextBox textBoxNewLevelName;
         private System.Windows.Forms.Label label2;
-    }
+		private System.Windows.Forms.Button AddPlane;
+	}
 }
