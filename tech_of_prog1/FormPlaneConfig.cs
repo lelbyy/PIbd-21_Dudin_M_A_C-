@@ -18,7 +18,6 @@ namespace tech_of_prog1
 		public FormPlaneConfig()
 		{
 			InitializeComponent();
-
 			foreach (var item in groupColors.Controls)
 			{
 				if (item is Panel)
@@ -26,7 +25,6 @@ namespace tech_of_prog1
 					((Panel)item).MouseDown += panelColor_MouseDown;
 				}
 			}
-
 			buttonCancel.Click += (object sender, EventArgs e) => { Close(); };
 		}
 
@@ -80,8 +78,7 @@ namespace tech_of_prog1
 		private void panelPlane_DragDrop(object sender, DragEventArgs e)
 		{
 			switch (e.Data.GetData(DataFormats.Text).ToString())
-			{
-				
+			{			
                 case "Самолет":
                     plane = new Plane((int)numericUpDownMaxSpeed.Value,
                    (int)numericUpDownWeight.Value, Color.Blue);
@@ -101,7 +98,6 @@ namespace tech_of_prog1
 
 		private void labelColor_DragEnter(object sender, DragEventArgs e)
 		{
-
 			if (e.Data.GetDataPresent(typeof(Color)))
 			{
 				e.Effect = DragDropEffects.Copy;
