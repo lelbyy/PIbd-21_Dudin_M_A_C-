@@ -13,14 +13,12 @@ namespace tech_of_prog1
 	public partial class FormPlane : Form
 	{
 		private ITransport plane;
-		/// <summary>
-		/// Конструктор
-		/// </summary>
 
 		public FormPlane()
 		{
 			InitializeComponent();
 		}
+
         public void SetCar(ITransport plane)
         {
             this.plane = plane;
@@ -29,14 +27,14 @@ namespace tech_of_prog1
             Draw();
             
         }
+
         private void Draw()
         {
             Bitmap bmp = new Bitmap(pictureBoxCars.Width, pictureBoxCars.Height);
             Graphics gr = Graphics.FromImage(bmp);
             plane?.DrawTransport(gr);
             pictureBoxCars.Image = bmp;
-        }
-        
+        }     
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -46,6 +44,7 @@ namespace tech_of_prog1
             Draw();
 
         }
+
         private void buttonCreate_Click_1(object sender, EventArgs e)
         {
             Random rnd = new Random();
@@ -180,11 +179,5 @@ namespace tech_of_prog1
             this.ResumeLayout(false);
 
 		}
-
-		
-
-		
-
-        
     }
 }

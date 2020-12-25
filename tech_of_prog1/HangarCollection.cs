@@ -25,10 +25,7 @@ namespace tech_of_prog1
             this.pictureWidth = pictureWidth;
             this.pictureHeight = pictureHeight;
         }
-        /// <summary>
-        /// Добавление парковки
-        /// </summary>
-        /// <param name="name">Название парковки</param>
+
         public void AddHangar(string name)
         {
             if (hangarStages.ContainsKey(name))
@@ -37,10 +34,7 @@ namespace tech_of_prog1
             }
             hangarStages.Add(name, new Hangar<Vehicle>(pictureWidth, pictureHeight));
         }
-        /// <summary>
-        /// Удаление парковки
-        /// </summary>
-        /// <param name="name">Название парковки</param>
+
         public void DelHangar(string name)
         {
             if (hangarStages.ContainsKey(name))
@@ -49,11 +43,6 @@ namespace tech_of_prog1
             }
         }
 
-        /// <summary>
-        /// Доступ к парковке
-        /// </summary>
-        /// <param name="ind"></param>
-        /// <returns></returns>
         public Hangar<Vehicle> this[string ind]
         {
             get {
@@ -63,39 +52,41 @@ namespace tech_of_prog1
                 return null;
             }
         }
-        public bool SaveData(string filename)
+
+       public bool SaveData(string filename)
         {
             if (File.Exists(filename))
             {
                 File.Delete(filename);
             }
-
-            StreamWriter streamWriter = new StreamWriter(filename);
-            streamWriter.WriteLine($"HangarCollection");
-            foreach (var level in hangarStages)
+            using (StreamWriter sw = new StreamWriter(filename))
             {
-                //Начинаем парковку
-                streamWriter.WriteLine($"Hangar{separator}{level.Key}");
-                ITransport plane = null;
-                for (int i = 0; (plane = level.Value.GetNext(i)) != null; i++)
+                sw.WriteLine("PortCollection");
+                foreach (var level in hangarStages)
                 {
-                    if (plane != null)
+                    //Начинаем парковку
+                    sw.WriteLine($"Port{separator}{level.Key}");
+                    ITransport boat = null;
+                    for (int i = 0; (boat = level.Value.GetNext(i)) != null; i++)
                     {
-
-                        if (plane.GetType().Name == "Plane")
+                        if (boat != null)
                         {
-                            streamWriter.Write($"Plane{separator}");
+                            //если место не пустое
+                            //Записываем тип машины
+                            if (boat.GetType().Name == "Boat")
+                            {
+                                sw.Write($"Boat{separator}");
+                            }
+                            if (boat.GetType().Name == "Catamaran")
+                            {
+                                sw.Write($"Catamaran{separator}");
+                            }
+                            //Записываемые параметры
+                            sw.WriteLine(boat);
                         }
-                        if (plane.GetType().Name == "Fighter")
-                        {
-                            streamWriter.Write($"Fighter{separator}");
-                        }
-                        //Записываемые параметры
-                        streamWriter.WriteLine(plane);
                     }
                 }
             }
-            streamWriter.Close();
             return true;
         }
 
@@ -105,53 +96,50 @@ namespace tech_of_prog1
             {
                 return false;
             }
-
-            StreamReader streamReader = new StreamReader(filename);
-            String str = streamReader.ReadLine();
-
-            if (str.Contains("HangarCollection"))
+            using (StreamReader sr = new StreamReader(filename, System.Text.Encoding.UTF8))
             {
-                //очищаем записи
-                hangarStages.Clear();
-            }
-            else
-            {
-                //если нет такой записи, то это не те данные
-                return false;
-            }
-            Vehicle plane = null;
-            string key = string.Empty;
-            while ((str = streamReader.ReadLine()) != null)
-            {
-                //идем по считанным записям
-                if (str.Contains("Hangar"))
+                string line = sr.ReadLine();
+                if (line.Contains("PortCollection"))
                 {
-                    //начинаем новую парковку
-                    key = str.Split(separator)[1];
-                    hangarStages.Add(key, new Hangar<Vehicle>(pictureWidth,
-                    pictureHeight));
-                    continue;
+                    //очищаем записи
+                    hangarStages.Clear();
                 }
-                if (string.IsNullOrEmpty(str))
+                else
                 {
-                    continue;
-                }
-                if (str.Split(separator)[0] == "Plane")
-                {
-                    plane = new Plane(str.Split(separator)[1]);
-                }
-                else if (str.Split(separator)[0] == "Fighter")
-                {
-                    plane = new Fighter(str.Split(separator)[1]);
-                }
-                var result = hangarStages[key] + plane;
-                if (!result)
-                {
+                    //если нет такой записи, то это не те данные
                     return false;
+                }
+                Vehicle boat = null;
+                string key = string.Empty;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (line.Contains("Port"))
+                    {
+                        key = line.Split(separator)[1];
+                        hangarStages.Add(key, new Hangar<Vehicle>(pictureWidth,
+                        pictureHeight));
+                        continue;
+                    }
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        continue;
+                    }
+                    if (line.Split(separator)[0] == "Boat")
+                    {
+                        boat = new Plane(line.Split(separator)[1]);
+                    }
+                    else if (line.Split(separator)[0] == "Catamaran")
+                    {
+                        boat = new Fighter(line.Split(separator)[1]);
+                    }
+                    var result = hangarStages[key] + boat;
+                    if (!result)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
         }
-
     }
 }

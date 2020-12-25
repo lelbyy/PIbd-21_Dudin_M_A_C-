@@ -15,8 +15,6 @@ namespace tech_of_prog1
 		Vehicle plane = null;
 		private event Action<Vehicle> eventAddPlane;
 
-		
-
 		public FormPlaneConfig()
 		{
 			InitializeComponent();
@@ -56,7 +54,6 @@ namespace tech_of_prog1
 			}
 		}
 
-
 		private void labelPlane_MouseDown(object sender, MouseEventArgs e)
 		{
 			labelPlane.DoDragDrop(labelPlane.Text, DragDropEffects.Move |
@@ -67,7 +64,6 @@ namespace tech_of_prog1
 			labelFighter.DoDragDrop(labelFighter.Text, DragDropEffects.Move |
 		   DragDropEffects.Copy);
 		}
-
 
 		private void panelPlane_DragEnter(object sender, DragEventArgs e)
 		{
@@ -80,6 +76,7 @@ namespace tech_of_prog1
 				e.Effect = DragDropEffects.None;
 			}
 		}
+
 		private void panelPlane_DragDrop(object sender, DragEventArgs e)
 		{
 			switch (e.Data.GetData(DataFormats.Text).ToString())
@@ -97,16 +94,11 @@ namespace tech_of_prog1
 			DrawPlane();
 		}
 
-		/// Отправляем цвет с панели
 		private void panelColor_MouseDown(object sender, MouseEventArgs e)
 		{
 			((Panel)sender).DoDragDrop(((Panel)sender).BackColor, DragDropEffects.Move | DragDropEffects.Copy);
 		}
 
-		/// Проверка получаемой информации (ее типа на соответствие требуемому)
-	
-
-		/// Принимаем основной цвет
 		private void labelColor_DragEnter(object sender, DragEventArgs e)
 		{
 
@@ -127,7 +119,6 @@ namespace tech_of_prog1
 			DrawPlane();
 		}
 
-		/// Принимаем дополнительный цвет
 		private void labelDopColor_DragDrop(object sender, DragEventArgs e)
 		{
 			if (plane is Fighter)
@@ -138,8 +129,6 @@ namespace tech_of_prog1
 				DrawPlane();
 			}
 		}
-
-	
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
