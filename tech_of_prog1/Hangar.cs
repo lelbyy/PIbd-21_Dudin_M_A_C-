@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Windows.Forms;
 
 namespace tech_of_prog1
 {
-    public class Hangar<T> where T : class, ITransport
+    class Hangar<T> : IEnumerator<T>, IEnumerable<T> where T : class, ITransport
     {
         private readonly List<T> _places;           
         private readonly int pictureWidth;      
@@ -17,9 +18,11 @@ namespace tech_of_prog1
         private readonly int _placeSizeHeight =160;
         private readonly int parkingPlacesInRow;
         private readonly int _maxCount;
-
+        private int _currentIndex;
+        public T Current => _places[_currentIndex];
+        object IEnumerator.Current => _places[_currentIndex];
         public Hangar(int picWidth, int picHeight)
-        {           
+        {          
             int width = picWidth / _placeSizeWidth;
             int height = picHeight / _placeSizeHeight;
             parkingPlacesInRow = height;
@@ -27,7 +30,7 @@ namespace tech_of_prog1
             pictureWidth = picWidth;
             pictureHeight = picHeight;
             _maxCount = width * height;
-
+            _currentIndex = -1;
         }
 
         public static bool operator +(Hangar<T> h, T plane)
@@ -36,10 +39,15 @@ namespace tech_of_prog1
             {
                 throw new HangarOverflowException();
             }
+            if (h._places.Contains(plane))
+            {
+                throw new HangarAlreadyHaveException();
+            }
+
             h._places.Add(plane);
             return true;
         }
-       
+
         public static T operator -(Hangar<T> h, int index)
         {
             if (index < -1 || index > h._places.Count)
@@ -84,6 +92,33 @@ namespace tech_of_prog1
                 return null;
             }
             return _places[index];
+        }
+
+        public void Sort() => _places.Sort((IComparer<T>)new PlaneComparer());
+
+        public void Dispose()
+        {
+        }
+
+        public bool MoveNext()
+        {
+            _currentIndex++;
+            return (_currentIndex < _places.Count);
+        }
+
+        public void Reset()
+        {
+            _currentIndex = -1;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this;
         }
     }
 }

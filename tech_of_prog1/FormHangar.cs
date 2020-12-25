@@ -46,8 +46,7 @@ namespace tech_of_prog1
         }
 
         private void Draw()
-        {
-         
+        {        
             if (listBoxHangars.SelectedIndex > -1)
             {//если выбран один из пуктов в listBox (при старте программы ни один пункт не будет выбран и может возникнуть ошибка, если мы попытаемся обратиться к элементу listBox)
                 Bitmap bmp = new Bitmap(pictureBoxParking.Width, pictureBoxParking.Height);
@@ -86,7 +85,7 @@ namespace tech_of_prog1
             }
         }
     }
-      
+
         private void buttonAddHangar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxHangars.Text))
@@ -149,6 +148,11 @@ namespace tech_of_prog1
                     MessageBox.Show(ex.Message, "Переполнение", MessageBoxButtons.OK,
                    MessageBoxIcon.Error);
                 }
+                catch (HangarAlreadyHaveException ex)
+                {
+                    MessageBox.Show(ex.Message, "Дублирование", MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+                }
                 catch (Exception ex)
                 {
                     logger.Info($"Неизвестная ошибка");
@@ -195,6 +199,16 @@ namespace tech_of_prog1
                     MessageBox.Show(ex.Message, "Неизвестная ошибка при загрузке",
                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void buttonSort_Click(object sender, EventArgs e)
+        {
+            if (listBoxHangars.SelectedIndex > -1)
+            {
+                hangarCollection[listBoxHangars.SelectedItem.ToString()].Sort();
+                Draw();
+                logger.Info("Сортировка уровней");
             }
         }
     }

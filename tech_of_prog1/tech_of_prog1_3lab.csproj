@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HangarAlreadyHaveException.cs" />
+    <Compile Include="PlaneComparer.cs" />
     <Compile Include="FormPlaneConfig.cs">
       <SubType>Form</SubType>
     </Compile>

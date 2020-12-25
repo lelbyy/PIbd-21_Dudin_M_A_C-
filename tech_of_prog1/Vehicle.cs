@@ -10,9 +10,12 @@ namespace tech_of_prog1
     public abstract class Vehicle : ITransport
     {
         
-        protected int _startPosX;       
-        protected int _startPosY;        
-        protected int _pictureWidth;    
+        protected int _startPosX;
+       
+        protected int _startPosY;
+        
+        protected int _pictureWidth;
+        
         protected int _pictureHeight;
 
         public int MaxSpeed { protected set; get; }
@@ -20,6 +23,7 @@ namespace tech_of_prog1
         public float Weight { protected set; get; }
 
         public Color MainColor { protected set; get; }
+
         public void SetPosition(int x, int y, int width, int height)
         {
         _startPosX = x;
@@ -27,7 +31,6 @@ namespace tech_of_prog1
         _pictureWidth = width;
         _pictureHeight = height;
         }
-
         public void SetPosition(int x, int y)
         {
             _startPosX = x;

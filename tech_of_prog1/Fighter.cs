@@ -19,8 +19,7 @@ namespace tech_of_prog1
         {
             DopColor = dopColor;
             Guns = guns;
-            Nose = nose;
-           
+            Nose = nose;          
         }
 
         public Fighter(string info) : base(info)
@@ -65,6 +64,60 @@ namespace tech_of_prog1
         {
             return
            $"{base.ToString()}{separator}{DopColor.Name}{separator}{Guns}{separator}{Nose}";
+        }
+
+        public bool Equals(Fighter other)
+        {
+            // Реализовать метод сравнения для дочернего класса
+            if (other == null)
+            {
+                return false;
+            }
+            if (GetType().Name != other.GetType().Name)
+            {
+                return false;
+            }
+            if (MaxSpeed != other.MaxSpeed)
+            {
+                return false;
+            }
+            if (Weight != other.Weight)
+            {
+                return false;
+            }
+            if (MainColor != other.MainColor)
+            {
+                return false;
+            }
+            if (DopColor != other.DopColor)
+            {
+                return false;
+            }
+            if (Guns != other.Guns)
+            {
+                return false;
+            }
+            if (Nose != other.Nose)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is Fighter carObj))
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(carObj);
+            }
         }
     }
 }

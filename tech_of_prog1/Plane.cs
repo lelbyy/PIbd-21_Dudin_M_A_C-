@@ -8,8 +8,7 @@ using System.Drawing;
 namespace tech_of_prog1
 {	
         public class Plane : Vehicle
-        {
-            
+        {            
             protected readonly int planeWidth = 210;
             
             protected readonly int planeHeight = 120;
@@ -78,9 +77,8 @@ namespace tech_of_prog1
                         _startPosY += step;
                     }
                     break;
-                }
             }
-
+        }
             public override void DrawTransport(Graphics g)
             {
             Pen pen = new Pen(Color.Black);
@@ -130,6 +128,7 @@ namespace tech_of_prog1
             g.FillPolygon(myBrush, krilo_niz);
 
             //хвост
+
             g.DrawLine(pen, _startPosX + 200, _startPosY + 30, _startPosX + 210, _startPosY + 5);
             g.DrawLine(pen, _startPosX + 210, _startPosY + 5, _startPosX + 210, _startPosY + 95);
             g.DrawLine(pen, _startPosX + 210, _startPosY + 95, _startPosX + 200, _startPosY + 70);
@@ -143,6 +142,47 @@ namespace tech_of_prog1
         public override string ToString()
         {
             return $"{MaxSpeed}{separator}{Weight}{separator}{MainColor.Name}";
+        }
+
+        public bool Equals(Plane other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            if (GetType().Name != other.GetType().Name)
+            {
+                return false;
+            }
+            if (MaxSpeed != other.MaxSpeed)
+            {
+                return false;
+            }
+            if (Weight != other.Weight)
+            {
+                return false;
+            }
+            if (MainColor != other.MainColor)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is Plane planeObj))
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(planeObj);
+            }
         }
     }
  }

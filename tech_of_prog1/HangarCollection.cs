@@ -12,7 +12,6 @@ namespace tech_of_prog1
         readonly Dictionary<string, Hangar<Vehicle>> hangarStages;
 
         public List<string> Keys => hangarStages.Keys.ToList();
-
         private readonly int pictureWidth;
 
         private readonly int pictureHeight;
@@ -53,93 +52,89 @@ namespace tech_of_prog1
             }
         }
 
-       public bool SaveData(string filename)
+        public void SaveData(string filename)
         {
             if (File.Exists(filename))
             {
                 File.Delete(filename);
             }
-            using (StreamWriter sw = new StreamWriter(filename))
+
+            StreamWriter streamWriter = new StreamWriter(filename);
+            streamWriter.WriteLine($"HangarCollection");
+            foreach (var level in hangarStages)
             {
-                sw.WriteLine("PortCollection");
-                foreach (var level in hangarStages)
+                //Начинаем парковку
+                streamWriter.WriteLine($"Hangar{separator}{level.Key}");
+
+                foreach (ITransport plane in level.Value)
                 {
-                    //Начинаем парковку
-                    sw.WriteLine($"Port{separator}{level.Key}");
-                    ITransport boat = null;
-                    for (int i = 0; (boat = level.Value.GetNext(i)) != null; i++)
+                    if (plane != null)
                     {
-                        if (boat != null)
+                        //если место не пустое
+                        //Записываем тип машины
+                        if (plane.GetType().Name == "Plane")
                         {
-                            //если место не пустое
-                            //Записываем тип машины
-                            if (boat.GetType().Name == "Boat")
-                            {
-                                sw.Write($"Boat{separator}");
-                            }
-                            if (boat.GetType().Name == "Catamaran")
-                            {
-                                sw.Write($"Catamaran{separator}");
-                            }
-                            //Записываемые параметры
-                            sw.WriteLine(boat);
+                            streamWriter.Write($"Plane{separator}");
                         }
+                        if (plane.GetType().Name == "BomberPlane")
+                        {
+                            streamWriter.Write($"BomberPlane{separator}");
+                        }
+                        //Записываемые параметры
+                        streamWriter.WriteLine(plane);
                     }
                 }
             }
-            return true;
+            streamWriter.Close();
         }
 
-        public bool LoadData(string filename)
+        public void LoadData(string filename)
         {
             if (!File.Exists(filename))
             {
-                return false;
+                throw new FileNotFoundException();
             }
-            using (StreamReader sr = new StreamReader(filename, System.Text.Encoding.UTF8))
+
+            StreamReader streamReader = new StreamReader(filename);
+            String str = streamReader.ReadLine();
+
+            if (str.Contains("HangarCollection"))
             {
-                string line = sr.ReadLine();
-                if (line.Contains("PortCollection"))
+                hangarStages.Clear();
+            }
+            else
+            {
+                throw new FormatException("Неверный формат файла");
+            }
+            Vehicle plane = null;
+            string key = string.Empty;
+            while ((str = streamReader.ReadLine()) != null)
+            {
+                if (str.Contains("Hangar"))
                 {
-                    //очищаем записи
-                    hangarStages.Clear();
+                    key = str.Split(separator)[1];
+                    hangarStages.Add(key, new Hangar<Vehicle>(pictureWidth,
+                    pictureHeight));
+                    continue;
                 }
-                else
+                if (string.IsNullOrEmpty(str))
                 {
-                    //если нет такой записи, то это не те данные
-                    return false;
+                    continue;
                 }
-                Vehicle boat = null;
-                string key = string.Empty;
-                while ((line = sr.ReadLine()) != null)
+                if (str.Split(separator)[0] == "Plane")
                 {
-                    if (line.Contains("Port"))
-                    {
-                        key = line.Split(separator)[1];
-                        hangarStages.Add(key, new Hangar<Vehicle>(pictureWidth,
-                        pictureHeight));
-                        continue;
-                    }
-                    if (string.IsNullOrEmpty(line))
-                    {
-                        continue;
-                    }
-                    if (line.Split(separator)[0] == "Boat")
-                    {
-                        boat = new Plane(line.Split(separator)[1]);
-                    }
-                    else if (line.Split(separator)[0] == "Catamaran")
-                    {
-                        boat = new Fighter(line.Split(separator)[1]);
-                    }
-                    var result = hangarStages[key] + boat;
-                    if (!result)
-                    {
-                        return false;
-                    }
+                    plane = new Plane(str.Split(separator)[1]);
+                }
+                else if (str.Split(separator)[0] == "Fighter")
+                {
+                    plane = new Fighter(str.Split(separator)[1]);
+                }
+                var result = hangarStages[key] + plane;
+                if (!result)
+                {
+                    throw new ArgumentNullException("Не удалось загрузить самолет в ангар");
                 }
             }
-            return true;
         }
     }
 }
