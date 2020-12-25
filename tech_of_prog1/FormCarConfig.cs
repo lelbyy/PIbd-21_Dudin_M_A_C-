@@ -10,22 +10,14 @@ using System.Windows.Forms;
 
 namespace tech_of_prog1
 {
-	public partial class FormPlaneConfig : Form
+	public partial class FormCarConfig : Form
 	{
 		Vehicle plane = null;
-		private event Action<Vehicle> eventAddPlane;
+		private event PlaneDelegate eventAddCar;
 
-		public FormPlaneConfig()
+		public FormCarConfig()
 		{
 			InitializeComponent();
-
-			foreach (var item in groupColors.Controls)
-			{
-				if (item is Panel)
-				{
-					((Panel)item).MouseDown += panelColor_MouseDown;
-				}
-			}
 
 			buttonCancel.Click += (object sender, EventArgs e) => { Close(); };
 		}
@@ -34,31 +26,33 @@ namespace tech_of_prog1
 		{
 			if (plane != null)
 			{
-				Bitmap bmp = new Bitmap(pictureBoxPlane.Width, pictureBoxPlane.Height);
+				Bitmap bmp = new Bitmap(pictureBoxCar.Width, pictureBoxCar.Height);
 				Graphics gr = Graphics.FromImage(bmp);
-				plane.SetPosition(30, 25, pictureBoxPlane.Width, pictureBoxPlane.Height);
+				plane.SetPosition(5, 5, pictureBoxCar.Width, pictureBoxCar.Height);
 				plane.DrawTransport(gr);
-				pictureBoxPlane.Image = bmp;
+				pictureBoxCar.Image = bmp;
 			}
 		}
 
-		public void AddEvent(Action<Vehicle> ev)
+		public void AddEvent(PlaneDelegate ev)
 		{
-			if (eventAddPlane == null)
+			if (eventAddCar == null)
 			{
-				eventAddPlane = new Action<Vehicle>(ev);
+				eventAddCar = new PlaneDelegate(ev);
 			}
 			else
 			{
-				eventAddPlane += ev;
+				eventAddCar += ev;
 			}
 		}
+
 
 		private void labelPlane_MouseDown(object sender, MouseEventArgs e)
 		{
 			labelPlane.DoDragDrop(labelPlane.Text, DragDropEffects.Move |
 		   DragDropEffects.Copy);
 		}
+
 		private void labelFighter_MouseDown(object sender, MouseEventArgs e)
 		{
 			labelFighter.DoDragDrop(labelFighter.Text, DragDropEffects.Move |
@@ -76,32 +70,29 @@ namespace tech_of_prog1
 				e.Effect = DragDropEffects.None;
 			}
 		}
-
 		private void panelPlane_DragDrop(object sender, DragEventArgs e)
 		{
 			switch (e.Data.GetData(DataFormats.Text).ToString())
 			{
-				
-                case "Самолет":
-                    plane = new Plane((int)numericUpDownMaxSpeed.Value,
-                   (int)numericUpDownWeight.Value, Color.Blue);
-                    break;
+				case "Самолет":
+					plane = new Plane(100, 500, Color.Black);
+					break;
 				case "Истребитель":
-					plane = new Fighter((int)numericUpDownMaxSpeed.Value,
-				   (int)numericUpDownWeight.Value, Color.Red, Color.Red, checkBoxGuns.Checked, checkBoxNose.Checked);
+					plane = new Fighter(100, 500, Color.Red, Color.Black, true, true);
 					break;
 			}
 			DrawPlane();
 		}
 
+		/// Отправляем цвет с панели
 		private void panelColor_MouseDown(object sender, MouseEventArgs e)
 		{
 			((Panel)sender).DoDragDrop(((Panel)sender).BackColor, DragDropEffects.Move | DragDropEffects.Copy);
 		}
 
-		private void labelColor_DragEnter(object sender, DragEventArgs e)
+		/// Проверка получаемой информации (ее типа на соответствие требуемому)
+		private void labelBaseColor_DragEnter(object sender, DragEventArgs e)
 		{
-
 			if (e.Data.GetDataPresent(typeof(Color)))
 			{
 				e.Effect = DragDropEffects.Copy;
@@ -110,30 +101,31 @@ namespace tech_of_prog1
 			{
 				e.Effect = DragDropEffects.None;
 			}
-
 		}
 
-		private void labelMainColor_DragDrop(object sender, DragEventArgs e)
+		/// Принимаем основной цвет
+		private void labelBaseColor_DragDrop(object sender, DragEventArgs e)
 		{
-			plane?.SetMainColor((Color)e.Data.GetData(typeof(Color)));
+			plane?.SetMainColor((Color)(e.Data.GetData(typeof(Color))));
 			DrawPlane();
 		}
 
+		/// Принимаем дополнительный цвет
 		private void labelDopColor_DragDrop(object sender, DragEventArgs e)
 		{
 			if (plane is Fighter)
 			{
-				Fighter fighter = (Fighter)plane;
-				fighter.SetDopColor((Color)(e.Data.GetData(typeof(Color))));
-				plane = fighter;
+				Fighter thisShip = (Fighter)plane;
+				thisShip.SetDopColor((Color)(e.Data.GetData(typeof(Color))));
+				plane = thisShip;
 				DrawPlane();
 			}
 		}
 
-        private void buttonAdd_Click(object sender, EventArgs e)
-        {
-			eventAddPlane?.Invoke(plane);
-			Close();			
-		}      
-    }
+		private void buttonOk_Click(object sender, EventArgs e)
+		{
+			eventAddCar?.Invoke(plane);
+			Close();
+		}
+	}
 }

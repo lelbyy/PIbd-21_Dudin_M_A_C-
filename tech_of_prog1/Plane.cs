@@ -16,7 +16,6 @@ namespace tech_of_prog1
 
             protected readonly char separator = ';';
 
-
         public Plane(int maxSpeed, float weight, Color mainColor)
             {
                 MaxSpeed = maxSpeed;
@@ -34,7 +33,6 @@ namespace tech_of_prog1
                 MainColor = Color.FromName(strs[2]);
             }
         }
-
 
         protected Plane(int maxSpeed, float weight, Color mainColor, int planeWidth, int
            planeHeight)
@@ -80,8 +78,9 @@ namespace tech_of_prog1
                         _startPosY += step;
                     }
                     break;
+                }
             }
-        }
+
             public override void DrawTransport(Graphics g)
             {
             Pen pen = new Pen(Color.Black);
@@ -96,8 +95,6 @@ namespace tech_of_prog1
             g.DrawLine(pen, _startPosX + 70, _startPosY + 30, _startPosX + 210, _startPosY + 30);
             g.DrawLine(pen, _startPosX + 70, _startPosY + 70, _startPosX + 210, _startPosY + 70);
                 
-
-
             Point point1 = new Point(_startPosX, _startPosY + 50);
             Point point2 = new Point(_startPosX + 30, _startPosY + 30);
             Point point3 = new Point(_startPosX + 210, _startPosY + 30);
@@ -106,7 +103,6 @@ namespace tech_of_prog1
             Point point6 = new Point(_startPosX, _startPosY + 50);
             Point[] corpuse = { point1, point2, point3, point4, point5, point6 };
             g.FillPolygon(myBrush, corpuse);
-
 
             //крылья
 
@@ -133,10 +129,7 @@ namespace tech_of_prog1
             g.FillPolygon(myBrush, krilo_verh);
             g.FillPolygon(myBrush, krilo_niz);
 
-
-
             //хвост
-
             g.DrawLine(pen, _startPosX + 200, _startPosY + 30, _startPosX + 210, _startPosY + 5);
             g.DrawLine(pen, _startPosX + 210, _startPosY + 5, _startPosX + 210, _startPosY + 95);
             g.DrawLine(pen, _startPosX + 210, _startPosY + 95, _startPosX + 200, _startPosY + 70);

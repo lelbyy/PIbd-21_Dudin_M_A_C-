@@ -8,18 +8,18 @@ using System.Windows.Forms;
 
 namespace tech_of_prog1
 {
-    public class Hangar<T> where T : class, ITransport
+    public class Parking<T> where T : class, ITransport
     {
         private readonly List<T> _places;           
         private readonly int pictureWidth;      
         private readonly int pictureHeight;       
         private readonly int _placeSizeWidth = 430;      
-        private readonly int _placeSizeHeight =160;
+        private readonly int _placeSizeHeight =160;                                                                                                   
         private readonly int parkingPlacesInRow;
         private readonly int _maxCount;
-
-        public Hangar(int picWidth, int picHeight)
-        {           
+        public Parking(int picWidth, int picHeight)
+        {
+            
             int width = picWidth / _placeSizeWidth;
             int height = picHeight / _placeSizeHeight;
             parkingPlacesInRow = height;
@@ -29,39 +29,47 @@ namespace tech_of_prog1
             _maxCount = width * height;
 
         }
+        /// <param name="p">Парковка</param>
+        /// <param name="car">Добавляемый автомобиль</param>
+        public static bool operator +(Parking<T> p, T plane)
 
-        public static bool operator +(Hangar<T> h, T plane)
         {
-            if (h._places.Count >= h._maxCount)
+            if (p._places.Count >= p._maxCount)
             {
-                throw new HangarOverflowException();
+                return false;
             }
-            h._places.Add(plane);
+            p._places.Add(plane);
             return true;
         }
        
-        public static T operator -(Hangar<T> h, int index)
+        public static T operator -(Parking<T> p, int index)
         {
-            if (index < -1 || index > h._places.Count)
+            if (index < -1 || index > p._places.Count)
             {
-                throw new HangarNotFoundException(index);
+                return null;
             }
-            T plane = h._places[index];
-            h._places.RemoveAt(index);
-            return plane;
+            T car = p._places[index];
+            p._places.RemoveAt(index);
+            return car;
         }
-
+        /// <summary>
+        /// Метод отрисовки парковки
+        /// </summary>
+        /// <param name="g"></param>
         public void Draw(Graphics g)
         {
             DrawMarking(g);
             for (int i = 0; i < _places.Count; ++i)
             {
-               _places[i].SetPosition(5 + i / 3 * _placeSizeWidth + 5, i % 3 *
+                _places[i].SetPosition(5 + i / 3 * _placeSizeWidth + 5, i % 3 *
                _placeSizeHeight + 30, pictureWidth, pictureHeight);
-               _places[i].DrawTransport(g);
+                _places[i].DrawTransport(g);
             }
         }
-
+        /// <summary>
+        /// Метод отрисовки разметки парковочных мест
+        /// </summary>
+        /// <param name="g"></param>
         private void DrawMarking(Graphics g)
         {
             Pen pen = new Pen(Color.Black, 3);
@@ -75,15 +83,7 @@ namespace tech_of_prog1
                 g.DrawLine(pen, i * _placeSizeWidth, 0, i * _placeSizeWidth,
                (pictureHeight / _placeSizeHeight) * _placeSizeHeight);
             }
-        }
 
-        public T GetNext(int index)
-        {
-            if (index < 0 || index >= _places.Count)
-            {
-                return null;
-            }
-            return _places[index];
         }
     }
 }

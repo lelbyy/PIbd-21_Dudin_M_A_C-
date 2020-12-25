@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,16 +13,18 @@ namespace tech_of_prog1
 {
     public partial class FormHangar : Form
     {
-        /// <summary>
-        /// Объект от класса-парковки
-        /// </summary>
         private readonly HangarCollection hangarCollection;
+
+        private readonly Logger logger;
+
         public FormHangar()
         {
             InitializeComponent();
             hangarCollection = new HangarCollection(pictureBoxParking.Width,
-           pictureBoxParking.Height);
+            pictureBoxParking.Height);
+            logger = LogManager.GetCurrentClassLogger();
         }
+
         private void ReloadLevels()
         {
             int index = listBoxHangars.SelectedIndex;
@@ -41,9 +44,7 @@ namespace tech_of_prog1
                 listBoxHangars.SelectedIndex = index;
             }
         }
-        /// <summary>
-        /// Метод отрисовки парковки
-        /// </summary>
+
         private void Draw()
         {
          
@@ -56,65 +57,46 @@ namespace tech_of_prog1
             }
         }
 
-        /// <summary>
-        /// Обработка нажатия кнопки "Припарковать гоночный автомобиль"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-       
-        /// <summary>
-        /// Обработка нажатия кнопки "Забрать"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonTakePlane_Click(object sender, EventArgs e)
+    private void buttonTakePlane_Click(object sender, EventArgs e)
+    {
+        if (listBoxHangars.SelectedIndex > -1 && maskedTextBoxPlace.Text != "")
         {
-            if (listBoxHangars.SelectedIndex > -1 && maskedTextBox1.Text != "")
+            try { 
+                var plane = hangarCollection[listBoxHangars.SelectedItem.ToString()] - Convert.ToInt32(maskedTextBoxPlace.Text);
+                     if (plane != null)
+                     {
+                         FormPlane form = new FormPlane();
+                         form.SetCar(plane);
+                         form.ShowDialog();
+                         logger.Info($"Изъят самолет {plane} с места{ maskedTextBoxPlace.Text}");
+                         Draw();
+                     }
+            }
+            catch (HangarNotFoundException ex)
             {
-                var plane = hangarCollection[listBoxHangars.SelectedItem.ToString()] - Convert.ToInt32(maskedTextBox1.Text);
-                if (plane != null)
-                {
-                    FormPlane form = new FormPlane();
-                    form.SetCar(plane);
-                    form.ShowDialog();
-                }
-                Draw();
+                logger.Info($"Самолет на месте { maskedTextBoxPlace.Text} не найден");
+                MessageBox.Show(ex.Message, "Не найдено", MessageBoxButtons.OK,
+               MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                logger.Info($"Неизвестная ошибка");
+                MessageBox.Show(ex.Message, "Неизвестная ошибка",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void buttonSetFighter_Click(object sender, EventArgs e)
-        {
-            if (listBoxHangars.SelectedIndex > -1)
-            {
-                ColorDialog dialog = new ColorDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                ColorDialog dialogDop = new ColorDialog();
-                    if (dialogDop.ShowDialog() == DialogResult.OK)
-                    {
-                        var plane = new Fighter(100, 1000, dialog.Color, dialogDop.Color, true, true);
-                        if (hangarCollection[listBoxHangars.SelectedItem.ToString()] + plane)
-                        {
-                            Draw();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Парковка переполнена");
-                        }
-                    }
-                }
-            }
-        }
+    }
+      
         private void buttonAddHangar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textBoxNewLevelName.Text))
+            if (string.IsNullOrEmpty(textBoxHangars.Text))
             {
                 MessageBox.Show("Введите название парковки", "Ошибка",
                MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-           
-            hangarCollection.AddHangar(textBoxNewLevelName.Text);
+            logger.Info($"Добавили ангар {textBoxHangars.Text}");
+            hangarCollection.AddHangar(textBoxHangars.Text);
             ReloadLevels();
         }
 
@@ -124,51 +106,72 @@ namespace tech_of_prog1
             {
                 if (MessageBox.Show($"Удалить парковку { listBoxHangars.SelectedItem.ToString()}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
+                    logger.Info($"Удалили ангар{ listBoxHangars.SelectedItem.ToString()}");
                     hangarCollection.DelHangar(listBoxHangars.SelectedItem.ToString());
                     ReloadLevels();
                 }
             }
         }
+
         private void listBoxParkings_SelectedIndexChanged(object sender, EventArgs e)
         {
+            logger.Info($"Перешли на ангар{ listBoxHangars.SelectedItem.ToString()}");
             Draw();
         }
 
-        private void AddPlane_Click(object sender, EventArgs e)
+        private void buttonSetPlane_Click(object sender, EventArgs e)
         {
             var formCarConfig = new FormPlaneConfig();
-            formCarConfig.AddEvent(addPlane);
+            formCarConfig.AddEvent(AddPlane);
             formCarConfig.Show();
         }
 
-        private void addPlane(Vehicle plane)
+        private void AddPlane(Vehicle plane)
         {
             if (plane != null && listBoxHangars.SelectedIndex > -1)
             {
-                if ((hangarCollection[listBoxHangars.SelectedItem.ToString()]) + plane)
+                try
                 {
+                    if ((hangarCollection[listBoxHangars.SelectedItem.ToString()]) + plane)
+                    {
+                        Draw();
+                        logger.Info($"Добавлен автомобиль {plane}");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Машину не удалось поставить");
+                    }
                     Draw();
                 }
-                else
+                catch (HangarOverflowException ex)
                 {
-                    MessageBox.Show("Машину не удалось поставить");
+                    logger.Info($"Переполнение");
+                    MessageBox.Show(ex.Message, "Переполнение", MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    logger.Info($"Неизвестная ошибка");
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка",
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
         }
 
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (hangarCollection.SaveData(saveFileDialog1.FileName))
+                try
                 {
+                    hangarCollection.SaveData(saveFileDialog.FileName);
                     MessageBox.Show("Сохранение прошло успешно", "Результат",
-                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    logger.Info("Сохранено в файл " + saveFileDialog.FileName);
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Не сохранилось", "Результат",
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка при сохранении",
                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -176,19 +179,21 @@ namespace tech_of_prog1
 
         private void загрузитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (hangarCollection.LoadData(openFileDialog1.FileName))
+                try
                 {
+                    hangarCollection.LoadData(openFileDialog.FileName);
                     MessageBox.Show("Загрузили", "Результат", MessageBoxButtons.OK,
-                   MessageBoxIcon.Information);
+                    MessageBoxIcon.Information);
+                    logger.Info("Загружено из файла " + openFileDialog.FileName);
                     ReloadLevels();
                     Draw();
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Не загрузили", "Результат", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка при загрузке",
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

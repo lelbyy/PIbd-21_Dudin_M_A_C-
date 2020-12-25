@@ -8,7 +8,6 @@ namespace tech_of_prog1
 {
 	public delegate void PlaneDelegate(Vehicle plane);
 
-
 	static class Program
 	{
 		/// <summary>
