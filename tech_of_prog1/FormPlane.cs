@@ -36,15 +36,7 @@ namespace tech_of_prog1
             pictureBoxCars.Image = bmp;
         }
         
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Random rnd = new Random();
-            plane = new Plane(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Gray);
-            plane.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCars.Width, pictureBoxCars.Height);
-            Draw();
-        }
-
-        private void buttonCreate_Click_1(object sender, EventArgs e)
+        private void buttonCreateFighter_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
             plane = new Fighter(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Gray, Color.Red, true, true);
@@ -74,7 +66,15 @@ namespace tech_of_prog1
 			Draw();
 		}
 
-		private void InitializeComponent()
+        private void buttonCreatePlane_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            plane = new Plane(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Gray);
+            plane.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCars.Width, pictureBoxCars.Height);
+            Draw();
+        }
+
+        private void InitializeComponent()
 		{
             this.pictureBoxCars = new System.Windows.Forms.PictureBox();
             this.buttonCreateFighter = new System.Windows.Forms.Button();
@@ -103,7 +103,7 @@ namespace tech_of_prog1
             this.buttonCreateFighter.TabIndex = 1;
             this.buttonCreateFighter.Text = "Создать истрибитель";
             this.buttonCreateFighter.UseVisualStyleBackColor = true;
-            this.buttonCreateFighter.Click += new System.EventHandler(this.buttonCreate_Click_1);
+            this.buttonCreateFighter.Click += new System.EventHandler(this.buttonCreateFighter_Click);
             // 
             // buttonUp
             // 
@@ -157,7 +157,7 @@ namespace tech_of_prog1
             this.buttonCreatePlane.TabIndex = 6;
             this.buttonCreatePlane.Text = "Создать самолет";
             this.buttonCreatePlane.UseVisualStyleBackColor = true;
-            this.buttonCreatePlane.Click += new System.EventHandler(this.button1_Click);
+            this.buttonCreatePlane.Click += new System.EventHandler(this.buttonCreatePlane_Click);
             // 
             // FormPlane
             // 
@@ -174,6 +174,7 @@ namespace tech_of_prog1
             this.Text = "Парковка";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCars)).EndInit();
             this.ResumeLayout(false);
+
 		}
     }
 }
